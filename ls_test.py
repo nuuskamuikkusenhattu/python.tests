@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -16,8 +18,8 @@ import sys, os, stat
 # run on command line: 
 # python3 ls_test.py <path of ls_project>
 
-# creating setuid/setgid/stickybit -testfiles
-
+# creating setuid/setgid/stickybit -testfiles,
+# and a directory with no permissions
 def create_files(path):
 	files = {"/uidi": 0o2775, "/uidiS": 0o2666, "/gidi": 0o4775, "/gidiS": 0o4666, 
 			"/sticky": 0o1775, "/stickyT": 0o1666}
@@ -26,9 +28,18 @@ def create_files(path):
 		f = open(path + name, "x")
 		os.chmod(path + name, files[name])
 		f.close()
+	os.mkdir(path + "/noperm")
+	os.chmod(path + "/noperm", 000)
+
+# running 'ls -l for files in project directory'
+# comparing results
+def ls_l(path):
+	command = "ls -l " + path
+	
 
 if len(sys.argv) != 2:
 	print("exactly one argument needed!\ntry 'python3 ls_test.py <path_of_dir>'")
 else:
-	path = sys.argv[1];
+	path = sys.argv[1]
 	create_files(path)
+	ls_l(path)
