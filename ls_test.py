@@ -12,7 +12,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-import sys, os, stat
+import sys, os, stat, filecmp
+from tkinter import READABLE
 
 # HOW TO:
 # run on command line: 
@@ -29,17 +30,34 @@ def create_files(path):
 		os.chmod(path + name, files[name])
 		f.close()
 	os.mkdir(path + "/noperm")
-	os.chmod(path + "/noperm", 000)
+	# os.chmod(path + "/noperm", 000)
 
 # running 'ls -l for files in project directory'
 # comparing results
-def ls_l(path):
-	command = "ls -l " + path
-	
+def write_to_files(path):
+	os.system("ls> real.txt")
+	os.system("./ft_ls> temp.txt")
+	temp = open("temp.txt", "r+")
+	real = open("real.txt", "r+")
+	user = open("user.txt", "r+")
+	for row in temp:
+		x = row.split()
+	for w in x:
+		user.write(w + "\n")
+	user.close()
+	u = open("user.txt", "r")
+	for line1 in u:
+		for line2 in real:
+			if line1 == line2:
+				print("theyre the same")
+			else:
+				print("theyre different")
+			break
+
 
 if len(sys.argv) != 2:
 	print("exactly one argument needed!\ntry 'python3 ls_test.py <path_of_dir>'")
 else:
 	path = sys.argv[1]
-	create_files(path)
-	ls_l(path)
+	# create_files(path)
+	write_to_files(path)
